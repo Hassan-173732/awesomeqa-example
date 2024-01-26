@@ -26,7 +26,7 @@ async def root():
 
 @app.get("/tickets")
 async def get_tickets(
-    limit: int = 20,
+    limit: int = 1,
     ticket_repository: TicketRepository = Depends(lambda: ticket_repository),
 ):
     tickets = ticket_repository.get_tickets(limit)
