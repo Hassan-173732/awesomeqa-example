@@ -2,11 +2,20 @@ from app.repositories.ticket_repository import TicketRepository
 import uvicorn
 from fastapi import Depends, FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
 
-TICKET_FILEPATH = "../data/awesome_tickets.json"
+app.add_middleware(
+  CORSMiddleware,
+    allow_origins="http://localhost:3000",
+    
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+TICKET_FILEPATH = "C://Projects//AwesomeChallenge//awesomeqa-example//backend//app//data//awesome_tickets.json"
 ticket_repository = TicketRepository(filepath=TICKET_FILEPATH)
 
 

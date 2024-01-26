@@ -3,6 +3,9 @@ import { NextPage } from "next";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { Button } from "@mui/material";
+import HomePageButton from "../../components/homePageButton";
+
+
 
 const Home: NextPage = () => {
 
@@ -16,14 +19,9 @@ const Home: NextPage = () => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleClick}
-                sx={{ width: "50%", height: "4rem", fontSize: "1.2rem" }}
-              >
-                Some other Button
-              </Button>
+            <HomePageButton title="Knowledge Base" src="/assets/books.png" to="#" />
+            <HomePageButton title="Tickets" src="/assets/agent.png" to="/ticket"/>
+            <HomePageButton title="FAQ Insights" src="/assets/lightbulb.png" to="#"/>
             </Box>
           </Grid>
         </Grid>
