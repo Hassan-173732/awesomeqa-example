@@ -1,13 +1,16 @@
 import json
 from typing import Optional
 
+from app.helper.helper import Helper
+
 
 class TicketRepository:
     def __init__(self, filepath: str):
         with open(filepath) as json_file:
             self.data = json.load(json_file)
-
+            
     def get_tickets(self, limit: Optional[int] = None) -> list[dict]:
+
         open_tickets = [ticket for ticket in self.data["tickets"] if ticket["status"] == "open"]
         
         # If limit is specified, return only the specified number of tickets
@@ -15,6 +18,7 @@ class TicketRepository:
 
         # Fetch related messages for each open ticket along with context messages
         tickets_with_messages = []
+        helper_instance = Helper()
         for ticket in open_tickets:
             message_id = ticket["msg_id"]
             related_message = next((msg for msg in self.data["messages"] if msg["id"] == message_id), None)
@@ -31,9 +35,12 @@ class TicketRepository:
                     "nickname": related_message["author"]["nickname"],
                     "avatar_url": related_message["author"]["avatar_url"],
                     "is_bot": related_message["author"]["is_bot"],
+                    "generate_ticket_id": helper_instance.generate_unique_id(ticket["id"]),
                 }
 
                 # Include information about context messages
+                  # Define the helper_instance variable
+
                 context_messages_info = []
                 for context_msg_id in ticket["context_messages"]:
                     context_message = next((msg for msg in self.data["messages"] if msg["id"] == context_msg_id), None)
@@ -44,6 +51,7 @@ class TicketRepository:
                             "avatar_url": context_message["author"]["avatar_url"],
                             "nickname": context_message["author"]["nickname"],
                             "msg_url": context_message["msg_url"],
+                            
                         })
 
                 ticket_with_message["context_messages"] = context_messages_info

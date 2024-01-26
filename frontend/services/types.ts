@@ -9,6 +9,7 @@ export interface TicketData {
     nickname: string;
     avatar_url: string;
     is_bot: boolean;
+    generate_ticket_id: string;
     context_messages?: ContextMessage[];
 }
 

@@ -1,0 +1,112 @@
+.card {
+  position: relative;
+  width: auto; /* Set width to 100% */
+  margin: 16px; /* Adjust margin as needed */
+  padding: 16px; /* Adjust padding as needed */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  transition: transform 0.3s;
+  box-sizing: border-box; /* Include padding in the width calculation */
+  background-color: #1c1c1f !important; /* Background color */
+  border: 1px solid !important;
+  border-color: #302f36 !important ; /* Border color */
+  border-radius: 8px !important;
+  color: #fff; /* Border radius */
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.buttonContainer {
+  position: absolute;
+  top: 8px;
+  right: 8px; /* Updated to position at the top-right corner */
+  display: flex;
+  flex-direction: row;
+}
+
+.actionButton {
+  cursor: pointer;
+  margin-bottom: 8px;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+}
+
+.button {
+  margin-left: 10px;
+}
+
+.cardContent {
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.avatarContainer {
+  display: flex;
+}
+
+.avatar {
+  margin-right: 8px;
+}
+
+.messageContainer {
+  color: #fff !important;
+  transition: transform 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Include padding in the width calculation */
+  background-color: #3e3e44 !important; /* Background color */
+  border: 1px solid !important;
+  border-color: #302f36 !important ; /* Border color */
+  border-radius: 8px !important;
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  align-items: flex-start;
+  padding: 10px;
+  margin-left: 40px;
+}
+
+.messageLink {
+  position: absolute;
+  right: 50px;
+  display: flex;
+  flex-direction: row;
+}
+
+.textContainer {
+  color: #fff !important;
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  align-items: flex-start;
+}
+
+.headingText {
+  color: #fff !important;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
+.chip {
+  margin-left: 8px;
+  margin-top: 6px; /* Add margin to separate Chip from the nickname */
+  font-size: 10px !important; /* Set the font size to reduce the overall size */
+  border: #4caf50 1px solid !important; /* Change the fill color to your desired color */
+  color: #4caf50 !important; /* Add margin to separate Chip from the nickname */
+}
+
+.secondaryText {
+  color: #fff;
+  margin-top: 8px;
+}
+
+.accordionContainer {
+  margin-top: 16px;
+}

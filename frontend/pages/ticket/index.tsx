@@ -1,7 +1,7 @@
 import * as React from "react";
 import { NextPage } from "next";
 import { useTicketList } from "../../services/hooks";
-import TicketCard from "../../components/TicketCard";
+import TicketCard from "../../components/ticketCard";
 
 
 
