@@ -58,3 +58,14 @@ class TicketRepository:
                 tickets_with_messages.append(ticket_with_message)
 
         return tickets_with_messages
+
+    def delete_ticket(self, ticket_id: str) -> dict:
+        helper_instance = Helper()
+        try:
+            ticket = next((ticket for ticket in self.data["tickets"] if ticket["id"] == ticket_id), None)
+            if ticket:
+                ticket["status"] = "deleted"
+        
+            return {"status": "success", "ticket_no": helper_instance.generate_unique_id(ticket["id"]), "message": "Ticket deleted successfully"}
+        except Exception as e:
+            return {"status": "error", "message": str(e)}

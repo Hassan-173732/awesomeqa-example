@@ -26,11 +26,25 @@ async def root():
 
 @app.get("/tickets")
 async def get_tickets(
-    limit: int = 1,
+    limit: int = 20,
     ticket_repository: TicketRepository = Depends(lambda: ticket_repository),
 ):
     tickets = ticket_repository.get_tickets(limit)
     return JSONResponse(tickets, status_code=200)
+
+
+@app.delete("/tickets/{ticket_id}")
+async def delete_ticket(
+    ticket_id: str,
+    ticket_repository: TicketRepository = Depends(lambda: ticket_repository),
+):
+    deleted_ticket = ticket_repository.delete_ticket(ticket_id)
+    if deleted_ticket["status"] == "success":
+        return JSONResponse({"message": "Ticket deleted successfully", "status" : deleted_ticket["status"], "ticketNo" : deleted_ticket["ticket_no"]}, status_code=200)
+    else:
+        return JSONResponse({"message": "Ticket not found", "status" : deleted_ticket["status"], "ticketNo" : deleted_ticket["ticket_no"]}, status_code=404)
+
+
 
 
 if __name__ == "__main__":

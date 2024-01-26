@@ -13,6 +13,7 @@ import React from "react";
 import relatedMessageCardStyles from "./relatedMessageCard.module.css";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import { ContextMessage } from "../../../services/types";
+import { formatTimeFrame } from "../utils";
 
 interface RelatedMessageCardProps {
   messages: ContextMessage[];
@@ -37,7 +38,10 @@ const RelatedMessageCard: React.FC<RelatedMessageCardProps> = ({
       <AccordionDetails>
         <Stack spacing={2}>
           {messages.map((message) => (
-            <div className={relatedMessageCardStyles.relatedmessageContainer}>
+            <div
+              key={message.timestamp}
+              className={relatedMessageCardStyles.relatedmessageContainer}
+            >
               <div className={relatedMessageCardStyles.avatarContainer}>
                 <Avatar
                   className={relatedMessageCardStyles.avatar}
@@ -47,6 +51,14 @@ const RelatedMessageCard: React.FC<RelatedMessageCardProps> = ({
                 />
                 <div className={relatedMessageCardStyles.textContainer}>
                   <Typography>{message.nickname}</Typography>
+                  <Typography
+                    className={relatedMessageCardStyles.messageContent}
+                  >
+                    {`"${message.content.slice(0, 50)}..."`}
+                  </Typography>
+                  <Typography className={relatedMessageCardStyles.timestamp}>
+                    {`Created at: ${formatTimeFrame(message.timestamp)}`}
+                  </Typography>
                 </div>
               </div>
               <div className={relatedMessageCardStyles.messageLink}>

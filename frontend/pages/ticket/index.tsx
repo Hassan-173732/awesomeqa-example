@@ -3,19 +3,19 @@ import { NextPage } from "next";
 import { useTicketList } from "../../services/hooks";
 import TicketCard from "../../components/ticketCard";
 
-
-
 const Ticket: NextPage = () => {
-
-  const { data, error, loading } = useTicketList();
+  const { data, loading, deleteTicket } = useTicketList();
 
   return (
     <>
-    {data.map((ticket) => (
-        <TicketCard key={ticket.ticket_id} ticketData={ticket} isLoading={loading} />
-      )
-    )}
-        
+      {data.map((ticket) => (
+        <TicketCard
+          key={ticket.ticket_id}
+          ticketData={ticket}
+          isLoading={loading}
+          deleteTicket={deleteTicket}
+        />
+      ))}
     </>
   );
 };
