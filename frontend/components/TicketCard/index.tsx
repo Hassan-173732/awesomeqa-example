@@ -1,28 +1,21 @@
-import React, { useState, MouseEvent } from "react";
+import React, { MouseEvent } from "react";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Avatar,
-  Box,
-  Button,
   Card,
   CardContent,
   Chip,
   Link,
-  Menu,
-  MenuItem,
-  Paper,
-  Popover,
   Tooltip,
   Typography,
 } from "@material-ui/core";
 import { TicketData } from "../../services/types";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import CheckIcon from "@mui/icons-material/Check"; // Add this line to import the CheckIcon component
 import ticketCardStyles from "./ticketCard.module.css";
+import RelatedMessageCard from "./relatedMessageCard";
+import { format } from "path";
+import { formatTimeFrame } from "./utils";
 
 interface TicketCardProps {
   ticketData: TicketData;
@@ -40,21 +33,22 @@ const TicketCard: React.FC<TicketCardProps> = ({ ticketData }) => {
 
   return (
     <Card className={ticketCardStyles.card}>
-      <Typography
-        className={ticketCardStyles.headingText}
-        variant="h5"
-        component="h2"
-      >
-        {`Ticket #${ticketData.generate_ticket_id}`}
-      </Typography>
-      {ticketData.is_bot ? (
+      <div className={ticketCardStyles.ticketHeading}>
+        <Typography
+          className={ticketCardStyles.headingText}
+          variant="h5"
+          component="h2"
+        >
+          {`Ticket #${ticketData.generate_ticket_id}`}
+        </Typography>
         <Chip
-          label="Bot"
+          label={ticketData.status}
           size="small"
           variant="outlined"
           className={ticketCardStyles.chip}
         />
-      ) : null}
+      </div>
+
       <div className={ticketCardStyles.buttonContainer}>
         <button className={ticketCardStyles.button} onClick={handleDelete}>
           <CheckIcon />
@@ -74,12 +68,17 @@ const TicketCard: React.FC<TicketCardProps> = ({ ticketData }) => {
             <Typography variant="h6" component="h2">
               {ticketData.nickname}
             </Typography>
-            <Chip
-              label={ticketData.status}
-              size="small"
-              variant="outlined"
-              className={ticketCardStyles.chip}
-            />
+            {!ticketData.is_bot ? (
+              <Chip
+                label="Bot"
+                size="small"
+                variant="outlined"
+                className={ticketCardStyles.botChip}
+              />
+            ) : null}
+            <Typography className={ticketCardStyles.timestamp}>
+              {`Created at: ${formatTimeFrame(ticketData.timestamp)}`}
+            </Typography>
           </div>
         </div>
 
@@ -95,22 +94,9 @@ const TicketCard: React.FC<TicketCardProps> = ({ ticketData }) => {
             </Tooltip>
           </div>
         </div>
+
+        <RelatedMessageCard messages={ticketData.context_messages} />
       </CardContent>
-      <Accordion className={ticketCardStyles.accordionContainer}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <Typography>Related Messages</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
     </Card>
   );
 };

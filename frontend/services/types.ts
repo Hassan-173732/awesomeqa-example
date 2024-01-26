@@ -13,7 +13,7 @@ export interface TicketData {
     context_messages?: ContextMessage[];
 }
 
-interface ContextMessage {
+export interface ContextMessage {
     content: string;
     timestamp: string;
     avatar_url: string;

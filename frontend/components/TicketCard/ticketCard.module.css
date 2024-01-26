@@ -59,7 +59,6 @@
   transition: transform 0.3s;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   box-sizing: border-box; /* Include padding in the width calculation */
-  background-color: #3e3e44 !important; /* Background color */
   border: 1px solid !important;
   border-color: #302f36 !important ; /* Border color */
   border-radius: 8px !important;
@@ -97,9 +96,17 @@
 .chip {
   margin-left: 8px;
   margin-top: 6px; /* Add margin to separate Chip from the nickname */
-  font-size: 10px !important; /* Set the font size to reduce the overall size */
+  font-size: 12px !important; /* Set the font size to reduce the overall size */
   border: #4caf50 1px solid !important; /* Change the fill color to your desired color */
   color: #4caf50 !important; /* Add margin to separate Chip from the nickname */
+}
+
+.botChip {
+  margin-left: 8px;
+  margin-top: 6px; /* Add margin to separate Chip from the nickname */
+  font-size: 12px !important; /* Set the font size to reduce the overall size */
+  border: #4772aa 1px solid !important; /* Change the fill color to your desired color */
+  color: #4772aa !important; /* Add margin to separate Chip from the nickname */
 }
 
 .secondaryText {
@@ -107,6 +114,14 @@
   margin-top: 8px;
 }
 
-.accordionContainer {
-  margin-top: 16px;
+.timestamp {
+  color: #f8e4e4;
+  font-style: italic;
+  margin-top: 10px !important;
+  margin-left: 10px !important;
+  font-size: 12px !important;
+}
+
+.ticketHeading {
+  display: inline-flex;
 }

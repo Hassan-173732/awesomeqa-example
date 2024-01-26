@@ -1,0 +1,52 @@
+.accordionContainer {
+  margin-top: 16px;
+  background-color: #1c1c1f !important;
+  color: #fff !important;
+  margin-left: 40px !important;
+}
+
+.accordionIcon {
+  color: #fff !important;
+}
+
+.relatedmessageContainer {
+  color: #fff !important;
+  width: auto;
+  transition: transform 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Include padding in the width calculation */
+  background-color: #3e3e44 !important; /* Background color */
+  border: 1px solid !important;
+  border-color: #302f36 !important ; /* Border color */
+  border-radius: 8px !important;
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  align-items: flex-start;
+  padding: 10px;
+  margin-left: 40px !important;
+}
+.messageLink {
+  position: absolute;
+  right: 50px;
+  display: flex;
+  flex-direction: row;
+}
+
+.avatarContainer {
+  display: flex;
+}
+
+.avatar {
+  margin-right: 8px;
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.textContainer {
+  color: #fff !important;
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  align-items: flex-start;
+}
