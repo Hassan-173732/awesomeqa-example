@@ -3,18 +3,20 @@ import {
   Avatar,
   Card,
   CardContent,
+  Button,
   Chip,
   Link,
   Tooltip,
   Typography,
 } from "@material-ui/core";
 import { TicketData } from "../../services/types";
-import DeleteIcon from "@mui/icons-material/Delete";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import CheckIcon from "@mui/icons-material/Check"; // Add this line to import the CheckIcon component
 import ticketCardStyles from "./ticketCard.module.css";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import RelatedMessageCard from "./relatedMessageCard";
 import { formatTimeFrame } from "./utils";
+import { IconButton } from "@mui/material";
 
 interface TicketCardProps {
   ticketData: TicketData;
@@ -58,15 +60,15 @@ const TicketCard: React.FC<TicketCardProps> = ({
         </div>
 
         <div className={ticketCardStyles.buttonContainer}>
-          <button className={ticketCardStyles.button}>
+          <IconButton className={ticketCardStyles.doneButton}>
             <CheckIcon />
-          </button>
-          <button
-            className={ticketCardStyles.button}
+          </IconButton>
+          <IconButton
+            className={ticketCardStyles.deleteButton}
             onClick={() => handleDelete(ticketData.ticket_id)}
           >
-            <DeleteIcon />
-          </button>
+            <DeleteOutlineOutlinedIcon />
+          </IconButton>
         </div>
         <CardContent className={ticketCardStyles.cardContent}>
           <div className={ticketCardStyles.avatarContainer}>

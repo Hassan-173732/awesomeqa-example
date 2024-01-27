@@ -1,6 +1,6 @@
 from app.repositories.ticket_repository import TicketRepository
 import uvicorn
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, Query
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -15,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-TICKET_FILEPATH = "C://Projects//AwesomeChallenge//awesomeqa-example//backend//app//data//awesome_tickets.json"
+TICKET_FILEPATH = "C://Projects//AwesomeChallenge//awesomeqa-example//backend//app//data//test.json"
 ticket_repository = TicketRepository(filepath=TICKET_FILEPATH)
 
 
@@ -27,9 +27,11 @@ async def root():
 @app.get("/tickets")
 async def get_tickets(
     limit: int = 20,
+    onlyOpen: bool = Query(False, description="Filter by only open tickets"),
+    onlyClosed: bool = Query(False, description="Filter by only closed tickets"),
     ticket_repository: TicketRepository = Depends(lambda: ticket_repository),
 ):
-    tickets = ticket_repository.get_tickets(limit)
+    tickets = ticket_repository.get_tickets(limit, onlyOpen, onlyClosed)
     return JSONResponse(tickets, status_code=200)
 
 

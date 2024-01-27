@@ -1,0 +1,7 @@
+.seacrhInput {
+  flex: 1;
+  margin-left: 1;
+  color: #fff !important;
+  background-color: #3e3e44 !important;
+  border: 1px solid #fff !important;
+}
