@@ -1,6 +1,8 @@
+from fastapi.encoders import jsonable_encoder
+from pydantic import BaseModel
 from app.repositories.ticket_repository import TicketRepository
 import uvicorn
-from fastapi import Depends, FastAPI, Query
+from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -15,8 +17,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-TICKET_FILEPATH = "C://Projects//AwesomeChallenge//awesomeqa-example//backend//app//data//test.json"
+TICKET_FILEPATH = "C://Projects//AwesomeChallenge//awesomeqa-example//backend//app//data//awesome_tickets.json"
 ticket_repository = TicketRepository(filepath=TICKET_FILEPATH)
+
+
+
+
 
 
 @app.get("/healthz")
@@ -26,7 +32,7 @@ async def root():
 
 @app.get("/tickets")
 async def get_tickets(
-    limit: int = 20,
+    limit: int = None,
     onlyOpen: bool = Query(False, description="Filter by only open tickets"),
     onlyClosed: bool = Query(False, description="Filter by only closed tickets"),
     ticket_repository: TicketRepository = Depends(lambda: ticket_repository),
@@ -46,6 +52,40 @@ async def delete_ticket(
     else:
         return JSONResponse({"message": "Ticket not found", "status" : deleted_ticket["status"], "ticketNo" : deleted_ticket["ticket_no"]}, status_code=404)
 
+
+
+class TicketUpdatePayload(BaseModel):
+    ticket_id: str
+    status: str 
+
+@app.patch("/tickets")
+def update_ticket(
+    ticket_update_payload: TicketUpdatePayload,
+    ticket_repository: TicketRepository = Depends(lambda: ticket_repository),
+):
+    try:
+        # Assuming update_ticket now takes the payload as a parameter
+        
+        updated_ticket = ticket_repository.update_ticket(ticket_update_payload.ticket_id, ticket_update_payload.status)
+        
+        if updated_ticket["status"] == "success":
+            response_data = {
+                "message": "Ticket updated successfully",
+                "status": updated_ticket["status"],
+                "ticketNo": updated_ticket["ticket_no"]
+            }
+            return JSONResponse(response_data, status_code=200)
+        else:
+            response_data = {
+                "message": "Ticket not found",
+                "status": updated_ticket["status"],
+                "ticketNo": updated_ticket["ticket_no"]
+            }
+            return JSONResponse(response_data, status_code=404)
+    
+    except Exception as e:
+        # Handle exceptions if needed
+        return HTTPException(status_code=500, detail=str(e))
 
 
 

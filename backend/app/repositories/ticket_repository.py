@@ -10,24 +10,22 @@ class TicketRepository:
             self.data = json.load(json_file)
             
     def get_tickets(self, limit: Optional[int] = None, onlyOpen: bool = False, onlyClosed: bool = False) -> list[dict]:
-        open_tickets = [ticket for ticket in self.data["tickets"]]
-
-    # If limit is specified, return only the specified number of tickets
-        open_tickets = open_tickets[:limit] if limit is not None else open_tickets
-
-    # Fetch related messages for each open ticket along with context messages
+        open_tickets = [ticket for ticket in self.data["tickets"][:limit]] if limit is not None else self.data["tickets"]
         tickets_with_messages = []
         helper_instance = Helper()
+
         for ticket in open_tickets:
             message_id = ticket["msg_id"]
             related_message = next((msg for msg in self.data["messages"] if msg["id"] == message_id), None)
 
-        # Check conditions based on onlyBot, onlyOpen, and onlyClosed
-            if (
-                (onlyOpen and ticket["status"] == "open") or
-                (onlyClosed and ticket["status"] == "closed") or
-                (not onlyOpen and not onlyClosed and (ticket["status"] == "open" or ticket["status"] == "closed"))
-            ):
+        # Filtering condition
+            include_ticket = (
+            (onlyOpen and ticket["status"] == "open") or
+            (onlyClosed and ticket["status"] == "closed") or
+            (not onlyOpen and not onlyClosed)
+        )
+
+            if include_ticket:
                 ticket_with_message = {
                     "ticket_id": ticket["id"],
                     "message_content": related_message["content"],
@@ -40,24 +38,19 @@ class TicketRepository:
                     "avatar_url": related_message["author"]["avatar_url"],
                     "is_bot": related_message["author"]["is_bot"],
                     "generate_ticket_id": helper_instance.generate_unique_id(ticket["id"]),
-                }
-
-            # Include information about context messages
-                context_messages_info = []
-                for context_msg_id in ticket["context_messages"]:
-                    context_message = next((msg for msg in self.data["messages"] if msg["id"] == context_msg_id), None)
-                    if context_message:
-                        context_messages_info.append({
+                    "context_messages": [
+                        {
                             "content": context_message["content"],
                             "timestamp": context_message["timestamp"],
                             "avatar_url": context_message["author"]["avatar_url"],
                             "nickname": context_message["author"]["nickname"],
                             "msg_url": context_message["msg_url"],
-                        })
-
-                ticket_with_message["context_messages"] = context_messages_info
+                        }
+                        for context_msg_id in ticket["context_messages"]
+                        if (context_message := next((msg for msg in self.data["messages"] if msg["id"] == context_msg_id), None))
+                    ],
+                }
                 tickets_with_messages.append(ticket_with_message)
-
         return tickets_with_messages
 
 
@@ -71,3 +64,14 @@ class TicketRepository:
             return {"status": "success", "ticket_no": helper_instance.generate_unique_id(ticket["id"]), "message": "Ticket deleted successfully"}
         except Exception as e:
             return {"status": "error", "message": str(e)}
+        
+    def update_ticket(self, ticket_id: str,status: str) -> dict:
+        helper_instance = Helper()
+        try:
+            ticket = next((ticket for ticket in self.data["tickets"] if ticket["id"] == ticket_id), None)
+            if ticket:
+                ticket["status"] = status
+        
+            return {"status": "success", "ticket_no": helper_instance.generate_unique_id(ticket["id"]), "message": "Ticket updated successfully"}
+        except Exception as e:
+            return {"status": "error", "message": str(e)}    
