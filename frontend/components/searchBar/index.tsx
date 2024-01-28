@@ -37,7 +37,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       variant="standard"
       color="primary"
       InputProps={{
-        startAdornment: <SearchIcon style={{ marginLeft: "10px", marginRight: "10px",color: 'white' }} />,
+        startAdornment: <SearchIcon style={{ marginLeft: "10px", marginRight: "10px",color: '#c50e54' }} />,
         style: {
           color: 'white',
           padding: '4px',

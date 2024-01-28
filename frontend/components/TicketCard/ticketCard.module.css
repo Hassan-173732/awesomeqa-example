@@ -93,12 +93,20 @@
   margin-top: 8px;
 }
 
-.chip {
+.openChip {
   margin-left: 8px;
   margin-top: 6px; /* Add margin to separate Chip from the nickname */
   font-size: 12px !important; /* Set the font size to reduce the overall size */
   border: #4caf50 1px solid !important; /* Change the fill color to your desired color */
   color: #4caf50 !important; /* Add margin to separate Chip from the nickname */
+}
+
+.closeChip {
+  margin-left: 8px;
+  margin-top: 6px; /* Add margin to separate Chip from the nickname */
+  font-size: 12px !important; /* Set the font size to reduce the overall size */
+  border: #c50e54 1px solid !important; /* Change the fill color to your desired color */
+  color: #c50e54 !important; /* Add margin to separate Chip from the nickname */
 }
 
 .botChip {

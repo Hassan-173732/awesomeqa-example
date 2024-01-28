@@ -32,7 +32,7 @@ async def root():
 
 @app.get("/tickets")
 async def get_tickets(
-    limit: int = None,
+    limit: int = 20,
     onlyOpen: bool = Query(False, description="Filter by only open tickets"),
     onlyClosed: bool = Query(False, description="Filter by only closed tickets"),
     ticket_repository: TicketRepository = Depends(lambda: ticket_repository),

@@ -21,24 +21,30 @@ import { IconButton } from "@mui/material";
 interface TicketCardProps {
   ticketData: TicketData;
   deleteTicket: (ticketId: string) => Promise<void>;
+  updateTicket: (ticketId: string, status: string) => Promise<void>;
   isLoading: boolean;
 }
 
 const TicketCard: React.FC<TicketCardProps> = ({
   ticketData,
   deleteTicket,
+  updateTicket,
 }) => {
   const handleDelete = async (ticketId: string) => {
     try {
-      const response = await deleteTicket(ticketId);
+      await deleteTicket(ticketId);
     } catch (error) {
       console.log(error);
     }
   };
 
-  function handleMarkDone(event: MouseEvent<HTMLButtonElement>): void {
-    throw new Error("Function not implemented.");
-  }
+  const handleUpdate = async (ticketId: string, status: string) => {
+    try {
+      await updateTicket(ticketId, status);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -55,14 +61,26 @@ const TicketCard: React.FC<TicketCardProps> = ({
             label={ticketData.status}
             size="small"
             variant="outlined"
-            className={ticketCardStyles.chip}
+            className={
+              ticketData.status === "open"
+                ? ticketCardStyles.openChip
+                : ticketCardStyles.closeChip
+            }
           />
         </div>
 
         <div className={ticketCardStyles.buttonContainer}>
-          <IconButton className={ticketCardStyles.doneButton}>
-            <CheckIcon />
-          </IconButton>
+          {ticketData.status === "open" ? (
+            <IconButton
+              className={ticketCardStyles.doneButton}
+              onClick={() =>
+                handleUpdate(ticketData.ticket_id, ticketData.status)
+              }
+            >
+              <CheckIcon />
+            </IconButton>
+          ) : null}
+
           <IconButton
             className={ticketCardStyles.deleteButton}
             onClick={() => handleDelete(ticketData.ticket_id)}
