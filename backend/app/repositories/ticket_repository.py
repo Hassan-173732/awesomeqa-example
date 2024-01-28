@@ -10,7 +10,7 @@ class TicketRepository:
             self.data = json.load(json_file)
             
 
-    def get_tickets(self, limit: Optional[int] = None, onlyOpen: bool = False, onlyClosed: bool = False, searchFilter: str = '') -> list[dict]:
+    def get_tickets(self, limit: Optional[int] = None, onlyOpen: bool = False, onlyClosed: bool = False, searchFilter: str = '', sort: str = '') -> list[dict]:
         open_tickets = [ticket for ticket in self.data["tickets"][:limit]] if limit is not None else self.data["tickets"]
         tickets_with_messages = []
         helper_instance = Helper()
@@ -53,6 +53,7 @@ class TicketRepository:
                     "generate_ticket_id": helper_instance.generate_unique_id(ticket["id"]),
                     "context_messages": [
                         {
+                            "id": context_message["id"],
                             "content": context_message["content"],
                             "timestamp": context_message["timestamp"],
                             "avatar_url": context_message["author"]["avatar_url"],
@@ -64,6 +65,11 @@ class TicketRepository:
                     ],
                 }
                 tickets_with_messages.append(ticket_with_message)
+
+        if sort == 'asc':
+            tickets_with_messages = sorted(tickets_with_messages, key=lambda x: x["timestamp"])
+        else:
+            tickets_with_messages = sorted(tickets_with_messages, key=lambda x: x["timestamp"], reverse=True)
 
         return tickets_with_messages
 

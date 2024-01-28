@@ -17,17 +17,16 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = React.useState("");
 
-  const handleSearch = () => {
-    onSearch(query);
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
     setQuery(event.target.value);
   };
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
-      handleSearch();
+      // Execute onSearch when Enter key is pressed
+      onSearch(query);
     }
   };
 
@@ -36,17 +35,27 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       id="outlined-start-adornment"
       variant="standard"
       color="primary"
+      onChange={(e) => handleInputChange(e)}
+      onKeyDown={(e) => handleKeyPress(e)}
       InputProps={{
-        startAdornment: <SearchIcon style={{ marginLeft: "10px", marginRight: "10px",color: '#c50e54' }} />,
+        startAdornment: (
+          <SearchIcon
+            style={{
+              marginLeft: "10px",
+              marginRight: "10px",
+              color: "#c50e54",
+            }}
+          />
+        ),
         style: {
-          color: 'white',
-          padding: '4px',
-          borderRadius: '8px',
-          backgroundColor: '#302f36',
-          borderColor: 'white', // Border color without fieldset
+          color: "white",
+          padding: "4px",
+          borderRadius: "8px",
+          backgroundColor: "#302f36",
+          borderColor: "white", // Border color without fieldset
         },
       }}
-      style={{ marginTop: '20px', marginLeft: '20px', width: '300px' }}
+      style={{ marginTop: "20px", marginLeft: "20px", width: "300px" }}
       placeholder="Search..."
     />
   );

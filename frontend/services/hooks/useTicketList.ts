@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getTicketList, deleteTicket as deleteTicketApi, updateTicket as updateTicketApi } from "..";
 import { TicketData } from "../types";
 
-const useTicketList = (isOpenChecked: boolean, isClosedChecked: boolean) => {
+const useTicketList = (isOpenChecked: boolean, isClosedChecked: boolean, searchFilter: string, sortMethod: string) => {
   const [ticketList, setTicketList] = useState<TicketData[]>([]);
   const [deletedMessage, setDeletedMessage] = useState<string>();
   const [updatedMessage, setUpdatedMessage] = useState<string>();
@@ -14,6 +14,8 @@ const useTicketList = (isOpenChecked: boolean, isClosedChecked: boolean) => {
       const { data: ticketData } = await getTicketList({
         isOpenChecked,
         isClosedChecked,
+        searchFilter,
+        sortMethod,
       });
       setTicketList(ticketData);
       setLoading(false);
@@ -68,7 +70,7 @@ const useTicketList = (isOpenChecked: boolean, isClosedChecked: boolean) => {
   useEffect(() => {
     setLoading(true);
     fetchTicketList();
-  }, [isOpenChecked, isClosedChecked]);
+  }, [isOpenChecked, isClosedChecked,searchFilter,sortMethod]);
 
   return {
     data: ticketList,

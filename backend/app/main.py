@@ -31,19 +31,20 @@ async def root():
 
 
 @app.get("/tickets")
-async def get_tickets(
-    limit: int = 20,
+def get_tickets(
+    limit: int = 5,
     onlyOpen: bool = Query(False, description="Filter by only open tickets"),
     onlyClosed: bool = Query(False, description="Filter by only closed tickets"),
     searchFilter: str = Query(None, description="Search for a ticket"),
+    sort: str = Query(None, description="Sort by timestamp"),
     ticket_repository: TicketRepository = Depends(lambda: ticket_repository),
 ):
-    tickets = ticket_repository.get_tickets(limit, onlyOpen, onlyClosed, searchFilter)
+    tickets = ticket_repository.get_tickets(limit, onlyOpen, onlyClosed, searchFilter, sort)
     return JSONResponse(tickets, status_code=200)
 
 
 @app.delete("/tickets/{ticket_id}")
-async def delete_ticket(
+def delete_ticket(
     ticket_id: str,
     ticket_repository: TicketRepository = Depends(lambda: ticket_repository),
 ):

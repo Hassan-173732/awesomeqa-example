@@ -4,6 +4,8 @@ import { TicketData } from "./types";
 interface GetTicketListParams {
   isOpenChecked?: boolean;
   isClosedChecked?: boolean;
+  searchFilter?: string;
+  sortMethod?: string;
   
 }
 
@@ -20,6 +22,14 @@ export const getTicketList = async (params?: GetTicketListParams): Promise<Axios
 
   if (params?.isClosedChecked !== undefined) {
     queryParams.onlyClosed = params.isClosedChecked;
+  }
+
+  if (params?.searchFilter !== undefined) {
+    queryParams.searchFilter = params.searchFilter;
+  }
+
+  if (params?.sortMethod !== undefined) {
+    queryParams.sort = params.sortMethod;
   }
 
   const data = await axios.get(url, {

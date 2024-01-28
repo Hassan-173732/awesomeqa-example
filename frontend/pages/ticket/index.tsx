@@ -1,5 +1,4 @@
-
-import {useState} from "react";
+import { useState } from "react";
 import { NextPage } from "next";
 import { useTicketList } from "../../services/hooks";
 import TicketCard from "../../components/ticketCard";
@@ -10,13 +9,26 @@ import SortButton from "../../components/sortButton";
 const Ticket: NextPage = () => {
   const [isOpenChecked, setIsOpenChecked] = useState(false);
   const [isClosedChecked, setIsClosedChecked] = useState(false);
+  const [searchFilter, setSearchFilter] = useState("");
+  const [sortMethod, setSortMethod] = useState("");
 
-  const { data, loading, deleteTicket, deletedMessage, updateTicket, updatedMessage } = useTicketList(isOpenChecked, isClosedChecked);
+  const {
+    data,
+    loading,
+    deleteTicket,
+    deletedMessage,
+    updateTicket,
+    updatedMessage,
+  } = useTicketList(isOpenChecked, isClosedChecked, searchFilter, sortMethod);
 
-  
+  const handleSort = (sortMethod: string) => {
+    console.log("sortMethod", sortMethod);
+    setSortMethod(sortMethod);
+  };
 
   const handleSearch = (query: string) => {
-    console.log(query);
+    console.log("query", query);
+    setSearchFilter(query);
   };
 
   const handleIsOpen = (checked: boolean) => {
@@ -35,14 +47,22 @@ const Ticket: NextPage = () => {
     }
   };
 
-  const handleSort = () => {};
+  
 
   return (
     <>
       <SearchBar onSearch={handleSearch} />
-      <FilterSwitch checked={isOpenChecked} onChange={handleIsOpen} label="Open"/>
-      <FilterSwitch checked={isClosedChecked} onChange={handleIsClosed} label="Closed"/>
-      <SortButton onSort={handleSort}/>
+      <FilterSwitch
+        checked={isOpenChecked}
+        onChange={handleIsOpen}
+        label="Open"
+      />
+      <FilterSwitch
+        checked={isClosedChecked}
+        onChange={handleIsClosed}
+        label="Closed"
+      />
+      <SortButton onSort={handleSort} />
       {data.map((ticket) => (
         <TicketCard
           key={ticket.ticket_id}
