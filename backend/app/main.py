@@ -35,9 +35,10 @@ async def get_tickets(
     limit: int = 20,
     onlyOpen: bool = Query(False, description="Filter by only open tickets"),
     onlyClosed: bool = Query(False, description="Filter by only closed tickets"),
+    searchFilter: str = Query(None, description="Search for a ticket"),
     ticket_repository: TicketRepository = Depends(lambda: ticket_repository),
 ):
-    tickets = ticket_repository.get_tickets(limit, onlyOpen, onlyClosed)
+    tickets = ticket_repository.get_tickets(limit, onlyOpen, onlyClosed, searchFilter)
     return JSONResponse(tickets, status_code=200)
 
 

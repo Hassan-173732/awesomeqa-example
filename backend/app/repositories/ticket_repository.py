@@ -9,7 +9,8 @@ class TicketRepository:
         with open(filepath) as json_file:
             self.data = json.load(json_file)
             
-    def get_tickets(self, limit: Optional[int] = None, onlyOpen: bool = False, onlyClosed: bool = False) -> list[dict]:
+
+    def get_tickets(self, limit: Optional[int] = None, onlyOpen: bool = False, onlyClosed: bool = False, searchFilter: str = '') -> list[dict]:
         open_tickets = [ticket for ticket in self.data["tickets"][:limit]] if limit is not None else self.data["tickets"]
         tickets_with_messages = []
         helper_instance = Helper()
@@ -18,12 +19,24 @@ class TicketRepository:
             message_id = ticket["msg_id"]
             related_message = next((msg for msg in self.data["messages"] if msg["id"] == message_id), None)
 
-        # Filtering condition
+            # Filtering condition
             include_ticket = (
-            (onlyOpen and ticket["status"] == "open") or
-            (onlyClosed and ticket["status"] == "closed") or
-            (not onlyOpen and not onlyClosed)
-        )
+                (onlyOpen and ticket["status"] == "open") or
+                (onlyClosed and ticket["status"] == "closed") or
+                (not onlyOpen and not onlyClosed)
+            )
+
+            if searchFilter and include_ticket:
+                # Check if the searchFilter exists in message_content, nickname, or generate_ticket_id
+                search_param_exists = (
+                    searchFilter.lower() == related_message["content"].lower() or
+                    searchFilter.lower() == related_message["author"]["nickname"].lower() or
+                    searchFilter.lower() == helper_instance.generate_unique_id(ticket["id"]).lower()
+                )
+
+                if not search_param_exists:
+                    # If the search parameter is not found in the specified fields, skip this ticket
+                    continue
 
             if include_ticket:
                 ticket_with_message = {
@@ -51,7 +64,9 @@ class TicketRepository:
                     ],
                 }
                 tickets_with_messages.append(ticket_with_message)
+
         return tickets_with_messages
+
 
 
     def delete_ticket(self, ticket_id: str) -> dict:
