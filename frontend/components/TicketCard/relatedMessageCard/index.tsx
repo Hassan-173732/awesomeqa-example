@@ -33,7 +33,9 @@ const RelatedMessageCard: React.FC<RelatedMessageCardProps> = ({
         aria-controls="panel1-content"
         id="panel1-header"
       >
-        <Typography>{` See related messages (${messages.length})`}</Typography>
+        <Typography
+          className={relatedMessageCardStyles.accordingText}
+        >{` See related messages (${messages.length})`}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Stack spacing={2}>
@@ -64,7 +66,7 @@ const RelatedMessageCard: React.FC<RelatedMessageCardProps> = ({
               <div className={relatedMessageCardStyles.messageLink}>
                 <Tooltip title="Go to message">
                   <Link href={message.msg_url} color="inherit" underline="none">
-                    <OpenInNewOutlinedIcon />
+                    <OpenInNewOutlinedIcon className=""/>
                   </Link>
                 </Tooltip>
               </div>

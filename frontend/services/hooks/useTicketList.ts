@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getTicketList, deleteTicket as deleteTicketApi, updateTicket as updateTicketApi } from "..";
 import { TicketData } from "../types";
 
-const useTicketList = () => {
+const useTicketList = (isOpenChecked: boolean, isClosedChecked: boolean) => {
   const [ticketList, setTicketList] = useState<TicketData[]>([]);
   const [deletedMessage, setDeletedMessage] = useState<string>();
   const [updatedMessage, setUpdatedMessage] = useState<string>();
@@ -11,7 +11,10 @@ const useTicketList = () => {
 
   const fetchTicketList = async () => {
     try {
-      const { data: ticketData } = await getTicketList();
+      const { data: ticketData } = await getTicketList({
+        isOpenChecked,
+        isClosedChecked,
+      });
       setTicketList(ticketData);
       setLoading(false);
     } catch (error) {
@@ -65,7 +68,7 @@ const useTicketList = () => {
   useEffect(() => {
     setLoading(true);
     fetchTicketList();
-  }, []);
+  }, [isOpenChecked, isClosedChecked]);
 
   return {
     data: ticketList,

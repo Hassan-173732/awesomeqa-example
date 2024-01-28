@@ -38,9 +38,9 @@ const TicketCard: React.FC<TicketCardProps> = ({
     }
   };
 
-  const handleUpdate = async (ticketId: string, status: string) => {
+  const handleUpdate = async (ticketId: string) => {
     try {
-      await updateTicket(ticketId, status);
+      await updateTicket(ticketId, "closed");
     } catch (error) {
       console.log(error);
     }
@@ -73,9 +73,7 @@ const TicketCard: React.FC<TicketCardProps> = ({
           {ticketData.status === "open" ? (
             <IconButton
               className={ticketCardStyles.doneButton}
-              onClick={() =>
-                handleUpdate(ticketData.ticket_id, ticketData.status)
-              }
+              onClick={() => handleUpdate(ticketData.ticket_id)}
             >
               <CheckIcon />
             </IconButton>

@@ -9,6 +9,10 @@
   color: #fff !important;
 }
 
+.accordingText {
+  margin-left: 10px !important;
+}
+
 .relatedmessageContainer {
   color: #fff !important;
   width: auto;
@@ -31,6 +35,7 @@
   right: 50px;
   display: flex;
   flex-direction: row;
+  padding: 10px;
 }
 
 .messageContent {
@@ -68,3 +73,5 @@
   margin-left: 10px !important;
   font-size: 11px !important;
 }
+
+
