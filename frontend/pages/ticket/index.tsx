@@ -5,21 +5,37 @@ import TicketCard from "../../components/ticketCard";
 import SearchBar from "../../components/searchBar";
 import FilterSwitch from "../../components/filterSwitch";
 import SortButton from "../../components/sortButton";
+import { Button, Snackbar, SnackbarContent, makeStyles } from "@mui/material";
+import LoadButton from "../../components/loadButton";
 
 const Ticket: NextPage = () => {
   const [isOpenChecked, setIsOpenChecked] = useState(false);
   const [isClosedChecked, setIsClosedChecked] = useState(false);
   const [searchFilter, setSearchFilter] = useState("");
   const [sortMethod, setSortMethod] = useState("");
+  const [limit, setLimit] = useState({
+    start: 0,
+    end: 5,
+  });
 
   const {
     data,
     loading,
     deleteTicket,
     deletedMessage,
+    openDeleteToast,
+    openUpdateToast,
     updateTicket,
     updatedMessage,
-  } = useTicketList(isOpenChecked, isClosedChecked, searchFilter, sortMethod);
+    setOpenDeleteToast,
+    setOpenUpdateToast,
+  } = useTicketList(
+    isOpenChecked,
+    isClosedChecked,
+    searchFilter,
+    sortMethod,
+    limit
+  );
 
   const handleSort = (sortMethod: string) => {
     console.log("sortMethod", sortMethod);
@@ -29,6 +45,10 @@ const Ticket: NextPage = () => {
   const handleSearch = (query: string) => {
     console.log("query", query);
     setSearchFilter(query);
+    setLimit({
+      start: 0,
+      end: limit.end,
+    });
   };
 
   const handleIsOpen = (checked: boolean) => {
@@ -47,7 +67,12 @@ const Ticket: NextPage = () => {
     }
   };
 
-  
+  const handleLoad = () => {
+    setLimit({
+      start: 0,
+      end: limit.end + 5,
+    });
+  };
 
   return (
     <>
@@ -65,13 +90,38 @@ const Ticket: NextPage = () => {
       <SortButton onSort={handleSort} />
       {data.map((ticket) => (
         <TicketCard
+          isLoading={loading}
           key={ticket.ticket_id}
           ticketData={ticket}
-          isLoading={loading}
           deleteTicket={deleteTicket}
           updateTicket={updateTicket}
         />
       ))}
+
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={openDeleteToast}
+        autoHideDuration={6000}
+        onClose={() => setOpenDeleteToast(false)}
+      >
+        <SnackbarContent
+          style={{ backgroundColor: "#f44336", color: "#fff" }}
+          message={deletedMessage}
+        />
+      </Snackbar>
+
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={openUpdateToast}
+        autoHideDuration={6000}
+        onClose={() => setOpenUpdateToast(false)}
+      >
+        <SnackbarContent
+          style={{ backgroundColor: "#4caf50", color: "#fff" }}
+          message={updatedMessage}
+        />
+      </Snackbar>
+      <LoadButton onClick={handleLoad} />
     </>
   );
 };

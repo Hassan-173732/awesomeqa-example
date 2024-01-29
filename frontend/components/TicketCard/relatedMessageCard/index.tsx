@@ -41,7 +41,7 @@ const RelatedMessageCard: React.FC<RelatedMessageCardProps> = ({
         <Stack spacing={2}>
           {messages.map((message) => (
             <div
-              key={message.timestamp}
+              key={message.id}
               className={relatedMessageCardStyles.relatedmessageContainer}
             >
               <div className={relatedMessageCardStyles.avatarContainer}>

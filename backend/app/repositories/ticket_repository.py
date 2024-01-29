@@ -9,9 +9,23 @@ class TicketRepository:
         with open(filepath) as json_file:
             self.data = json.load(json_file)
             
+   
 
-    def get_tickets(self, limit: Optional[int] = None, onlyOpen: bool = False, onlyClosed: bool = False, searchFilter: str = '', sort: str = '') -> list[dict]:
+    
+
+
+    def get_tickets(self, limit: Optional[int] = None, onlyOpen: bool = False, onlyClosed: bool = False, searchFilter: str = '', sort: str = '', startIndex: int = 0, endIndex: int = 5) -> list[dict]:
+        startIndex = startIndex
+        endIndex = endIndex
+
+
+
+
         open_tickets = [ticket for ticket in self.data["tickets"][:limit]] if limit is not None else self.data["tickets"]
+
+        if startIndex < len(open_tickets):
+            open_tickets = open_tickets[startIndex:endIndex]
+
         tickets_with_messages = []
         helper_instance = Helper()
 
@@ -72,6 +86,7 @@ class TicketRepository:
             tickets_with_messages = sorted(tickets_with_messages, key=lambda x: x["timestamp"], reverse=True)
 
         return tickets_with_messages
+
 
 
 

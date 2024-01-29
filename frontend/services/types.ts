@@ -14,6 +14,7 @@ export interface TicketData {
 }
 
 export interface ContextMessage {
+    id: string;
     content: string;
     timestamp: string;
     avatar_url: string;

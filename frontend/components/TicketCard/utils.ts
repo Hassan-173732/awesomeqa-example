@@ -1,10 +1,19 @@
-export const formatTimeFrame = (timeFrame: string): string => {
-  const date = new Date(timeFrame);
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = String(date.getFullYear());
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
+export const formatTimeFrame = (timestamp: string): string => {
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
 
-  return `${day}:${month}:${year} ${hours}:${minutes}`;
+  const date = new Date(timestamp);
+  const monthAbbreviation = months[date.getMonth()];
+  const day = date.getDate();
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+
+  const formattedTime = `${monthAbbreviation} ${day}, ${year} ${hours}:${minutes} ${ampm}`;
+  return formattedTime;
 };
+
+

@@ -1,11 +1,26 @@
 import { useEffect, useState } from "react";
-import { getTicketList, deleteTicket as deleteTicketApi, updateTicket as updateTicketApi } from "..";
+import {
+  getTicketList,
+  deleteTicket as deleteTicketApi,
+  updateTicket as updateTicketApi,
+} from "..";
 import { TicketData } from "../types";
 
-const useTicketList = (isOpenChecked: boolean, isClosedChecked: boolean, searchFilter: string, sortMethod: string) => {
+const useTicketList = (
+  isOpenChecked: boolean,
+  isClosedChecked: boolean,
+  searchFilter: string,
+  sortMethod: string,
+  limit: {
+    start: number;
+    end: number;
+  }
+) => {
   const [ticketList, setTicketList] = useState<TicketData[]>([]);
   const [deletedMessage, setDeletedMessage] = useState<string>();
   const [updatedMessage, setUpdatedMessage] = useState<string>();
+  const [openDeleteToast, setOpenDeleteToast] = useState(false);
+  const [openUpdateToast, setOpenUpdateToast] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
 
@@ -16,8 +31,12 @@ const useTicketList = (isOpenChecked: boolean, isClosedChecked: boolean, searchF
         isClosedChecked,
         searchFilter,
         sortMethod,
+        limit,
       });
-      setTicketList(ticketData);
+
+      if (ticketData) {
+        setTicketList(ticketData);
+      }
       setLoading(false);
     } catch (error) {
       console.error("Error fetching ticket list:", error);
@@ -31,6 +50,7 @@ const useTicketList = (isOpenChecked: boolean, isClosedChecked: boolean, searchF
       // Call the deleteTicket API function with the ticketId to delete the ticket
       const response = await deleteTicketApi(ticketId);
       setDeletedMessage(response.data.message);
+      setOpenDeleteToast(true);
       // Update the ticket list locally by removing the deleted ticket
       setTicketList((prevList) =>
         prevList.filter((ticket) => ticket.ticket_id !== ticketId)
@@ -48,6 +68,7 @@ const useTicketList = (isOpenChecked: boolean, isClosedChecked: boolean, searchF
       // Call the updateStatus API function with the ticketId and status to update the ticket
       const response = await updateTicketApi(ticketId, status);
       setUpdatedMessage(response.data.message);
+      setOpenUpdateToast(true);
 
       // Update the ticket list locally by updating the ticket status
       setTicketList((prevList) =>
@@ -70,7 +91,7 @@ const useTicketList = (isOpenChecked: boolean, isClosedChecked: boolean, searchF
   useEffect(() => {
     setLoading(true);
     fetchTicketList();
-  }, [isOpenChecked, isClosedChecked,searchFilter,sortMethod]);
+  }, [isOpenChecked, isClosedChecked, searchFilter, sortMethod, limit]);
 
   return {
     data: ticketList,
@@ -78,8 +99,12 @@ const useTicketList = (isOpenChecked: boolean, isClosedChecked: boolean, searchF
     loading,
     deleteTicket,
     deletedMessage,
+    openDeleteToast,
+    setOpenDeleteToast,
     updateTicket,
     updatedMessage,
+    openUpdateToast,
+    setOpenUpdateToast,
   };
 };
 

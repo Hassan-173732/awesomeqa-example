@@ -32,14 +32,16 @@ async def root():
 
 @app.get("/tickets")
 def get_tickets(
-    limit: int = 5,
+    limit: int = None,
     onlyOpen: bool = Query(False, description="Filter by only open tickets"),
     onlyClosed: bool = Query(False, description="Filter by only closed tickets"),
     searchFilter: str = Query(None, description="Search for a ticket"),
     sort: str = Query(None, description="Sort by timestamp"),
+    startIndex: int = Query(0, description="current ticket number"),
+    endIndex: int = Query(5, description="ticket count"),
     ticket_repository: TicketRepository = Depends(lambda: ticket_repository),
 ):
-    tickets = ticket_repository.get_tickets(limit, onlyOpen, onlyClosed, searchFilter, sort)
+    tickets = ticket_repository.get_tickets(limit, onlyOpen, onlyClosed, searchFilter, sort, startIndex, endIndex)
     return JSONResponse(tickets, status_code=200)
 
 

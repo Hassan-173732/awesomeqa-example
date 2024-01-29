@@ -6,6 +6,10 @@ interface GetTicketListParams {
   isClosedChecked?: boolean;
   searchFilter?: string;
   sortMethod?: string;
+  limit?: {
+    start: number;
+    end: number;
+  };
   
 }
 
@@ -32,9 +36,19 @@ export const getTicketList = async (params?: GetTicketListParams): Promise<Axios
     queryParams.sort = params.sortMethod;
   }
 
+  if (params?.limit.start !== undefined) {
+    queryParams.startIndex = params.limit.start;
+  }
+
+  if (params?.limit.end !== undefined) {
+    queryParams.endIndex = params.limit.end;
+  }
+
   const data = await axios.get(url, {
     params: queryParams,
   });
+
+  
 
   return data;
 };
