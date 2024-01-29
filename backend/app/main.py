@@ -1,3 +1,4 @@
+import os
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from app.repositories.ticket_repository import TicketRepository
@@ -17,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-TICKET_FILEPATH = "C://Projects//AwesomeChallenge//awesomeqa-example//backend//app//data//awesome_tickets.json"
+TICKET_FILEPATH = os.path.join(os.getcwd(), "app", "data", "awesome_tickets.json")
 ticket_repository = TicketRepository(filepath=TICKET_FILEPATH)
 
 
