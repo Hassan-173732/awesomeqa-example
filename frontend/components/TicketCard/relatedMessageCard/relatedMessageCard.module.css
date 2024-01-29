@@ -35,7 +35,7 @@
   right: 50px;
   display: flex;
   flex-direction: row;
-  padding: 10px;
+  padding-bottom: 20px;
 }
 
 .messageContent {
@@ -73,5 +73,3 @@
   margin-left: 10px !important;
   font-size: 11px !important;
 }
-
-

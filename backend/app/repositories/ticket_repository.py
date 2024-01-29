@@ -21,7 +21,8 @@ class TicketRepository:
 
 
 
-        open_tickets = [ticket for ticket in self.data["tickets"][:limit]] if limit is not None else self.data["tickets"]
+        open_tickets = [ticket for ticket in self.data["tickets"] if ticket["status"] != "deleted"][:limit] if limit is not None else [ticket for ticket in self.data["tickets"] if ticket["status"] != "deleted"]
+
 
         if startIndex < len(open_tickets):
             open_tickets = open_tickets[startIndex:endIndex]
