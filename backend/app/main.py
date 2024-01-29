@@ -23,9 +23,6 @@ ticket_repository = TicketRepository(filepath=TICKET_FILEPATH)
 
 
 
-
-
-
 @app.get("/healthz")
 async def root():
     return "OK"
@@ -69,7 +66,7 @@ def update_ticket(
     ticket_repository: TicketRepository = Depends(lambda: ticket_repository),
 ):
     try:
-        # Assuming update_ticket now takes the payload as a parameter
+        
         
         updated_ticket = ticket_repository.update_ticket(ticket_update_payload.ticket_id, ticket_update_payload.status)
         

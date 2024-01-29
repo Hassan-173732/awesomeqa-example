@@ -95,19 +95,27 @@ class TicketRepository:
         helper_instance = Helper()
         try:
             ticket = next((ticket for ticket in self.data["tickets"] if ticket["id"] == ticket_id), None)
-            if ticket:
-                ticket["status"] = "deleted"
+        
+            if ticket is None:
+                return {"status": "failed", "message": "Ticket not found", "ticket_no": ""}
+        
+            ticket["status"] = "deleted"
         
             return {"status": "success", "ticket_no": helper_instance.generate_unique_id(ticket["id"]), "message": "Ticket deleted successfully"}
         except Exception as e:
             return {"status": "error", "message": str(e)}
         
+        
     def update_ticket(self, ticket_id: str,status: str) -> dict:
         helper_instance = Helper()
         try:
             ticket = next((ticket for ticket in self.data["tickets"] if ticket["id"] == ticket_id), None)
-            if ticket:
-                ticket["status"] = status
+
+            if ticket is None:
+                return {"status": "failed", "message": "Ticket not found", "ticket_no": ""}
+            
+            
+            ticket["status"] = status
         
             return {"status": "success", "ticket_no": helper_instance.generate_unique_id(ticket["id"]), "message": "Ticket updated successfully"}
         except Exception as e:
