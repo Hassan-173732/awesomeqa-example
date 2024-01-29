@@ -25,13 +25,17 @@ const RelatedMessageCard: React.FC<RelatedMessageCardProps> = ({
   return (
     <Accordion className={relatedMessageCardStyles.accordionContainer}>
       <AccordionSummary
+        className={relatedMessageCardStyles.accordingSummary}
         expandIcon={
           <ArrowDownwardIcon
             className={relatedMessageCardStyles.accordionIcon}
           />
         }
+        
+        
         aria-controls="panel1-content"
         id="panel1-header"
+        
       >
         <Typography
           className={relatedMessageCardStyles.accordingText}

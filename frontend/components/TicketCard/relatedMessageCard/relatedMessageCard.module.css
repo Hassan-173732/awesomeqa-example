@@ -5,6 +5,10 @@
   margin-left: 40px !important;
 }
 
+.accordingSummary {
+  width: 98% !important;
+}
+
 .accordionIcon {
   color: #fff !important;
 }

@@ -101,7 +101,7 @@ const TicketCard: React.FC<TicketCardProps> = ({
                 <Typography variant="h6" component="h2">
                   {ticketData.nickname}
                 </Typography>
-                {!ticketData.is_bot ? (
+                {ticketData.is_bot ? (
                   <Chip
                     label="Bot"
                     size="small"
